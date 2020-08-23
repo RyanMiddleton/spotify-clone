@@ -1,9 +1,11 @@
 export const initialState = {
   user: null,
   playlists: [],
+  spotify: null,
   playing: false,
   item: null,
-  //token: "BQAd0whTs5BpQYP7515m42BOfM_5yVfe0GZ1GRSZjZJjwlxNujFnHq1N9Q2cDH00sWexdtPN4hIYzj05_s-AhUfsR2mnOc7NCFxewpXVTgVQ_4JrBSy-ZE6hB7IgBeTg3mhSfxPP3LZwhqVQD6ubXoy0XL-_1w",
+  token: null,
+  top_artists: null,
 };
 
 const reducer = (state, action) => {
@@ -30,6 +32,21 @@ console.log(action);
       return {
         ...state,
         discover_weekly: action.discover_weekly,
+      }
+    case "SET_PLAYING":
+      return {
+        ...state,
+        playing: action.playing,
+      }
+    case "SET_ITEM":
+      return {
+        ...state,
+        item: action.item,
+      }
+    case "SET_SPOTIFY":
+      return {
+        ...state,
+        spotify: action.spotify,
       }
     default:
       return state;
