@@ -8,8 +8,8 @@ import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import SongRow from "./SongRow";
 
 function Body({ spotify }) {
-  const [{ discover_weekly }, dispatch] =useDataLayerValue();
-
+  const [{ playlists, discover_weekly }, dispatch] =useDataLayerValue();
+  console.log("play", playlists)
   const playPlaylist = (id) => {
     spotify.play({
       context_uri: `spotify:playlist:37i9dQZEVXcGmxaUX9dPJm`,
@@ -28,34 +28,12 @@ function Body({ spotify }) {
     });
   };
 
-  const play = ({
-  spotify_uri,
-  playerInstance: {
-    _options: {
-      getOAuthToken,
-      id
-    }
-  }
-}) => {
-  getOAuthToken(access_token => {
-    fetch(`https://api.spotify.com/v1/me/player/play?device_id=${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ uris: [spotify_uri] }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${access_token}`
-      },
-    });
-  });
-};
-
   const playSong = (id) => {
-    play({
-      spotify_uri: [`spotify:track:${id}`],
-      
+    spotify.play({
+      uris: [`spotify:track:${id}`],
     })
     .then((res) => {
-      spotify.getMyCurrentPlayingtrack().then((r) => {
+      spotify.getMyCurrentPlayingTrack().then((r) => {
         dispatch({
           type:"SET_ITEM",
           item: r.item,
@@ -89,7 +67,7 @@ function Body({ spotify }) {
         </div>
 
         {discover_weekly?.tracks.items.map(item => (
-          <SongRow onClick={playSong} track={item.track} />
+          <SongRow playSong={playSong} track={item.track} />
         ))}
       </div>
     </div>
